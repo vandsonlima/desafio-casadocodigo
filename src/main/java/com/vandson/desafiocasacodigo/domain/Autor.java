@@ -3,27 +3,22 @@ package com.vandson.desafiocasacodigo.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 /**
- * @author Vandson Lima (vandsonlima@info.ufrn.br)
+ * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 23/07/2020
  **/
 @Entity
 @Table
 @Getter
-@Setter
+//carga intríseca: 1
 public class Autor {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private LocalDateTime instant = LocalDateTime.now();
@@ -39,4 +34,20 @@ public class Autor {
     private String descricao;
 
 
+    public Autor(@NotEmpty @Email String email, @NotBlank String nome, @NotNull @Max(400) String descricao) {
+        this.email = email;
+        this.nome = nome;
+        this.descricao = descricao;
+    }
+
+    @Override
+    public String toString() {
+        return "Autor{" +
+                "id=" + id +
+                ", instant=" + instant +
+                ", email='" + email + '\'' +
+                ", nome='" + nome + '\'' +
+                ", descricao='" + descricao + '\'' +
+                '}';
+    }
 }

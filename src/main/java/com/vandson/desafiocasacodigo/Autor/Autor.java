@@ -1,6 +1,7 @@
 package com.vandson.desafiocasacodigo.Autor;
 
 import lombok.Getter;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -22,18 +23,16 @@ public class Autor {
 
     private LocalDateTime instant = LocalDateTime.now();
 
-    @Email
-    private String email;
+    private @Email @NotBlank String email;
+    private @NotBlank String nome;
+    private @NotBlank @Size(max = 400) String descricao;
 
-    @NotEmpty
-    private String nome;
+    public Autor(@Email @NotBlank String email, @NotBlank String nome, @NotNull @Max(400) String descricao) {
+        Assert.hasLength(email, "email não pode ser vazio");
+        Assert.hasLength(nome, "nome não pode ser vazio");
+        Assert.hasLength(descricao, "descrição não pode ser vazio");
+        Assert.isTrue(descricao.length() <= 400, "a descrição deve conter entre 1 e 400");
 
-    @NotEmpty
-    @Size(max = 400)
-    private String descricao;
-
-
-    public Autor(@NotEmpty @Email String email, @NotBlank String nome, @NotNull @Max(400) String descricao) {
         this.email = email;
         this.nome = nome;
         this.descricao = descricao;

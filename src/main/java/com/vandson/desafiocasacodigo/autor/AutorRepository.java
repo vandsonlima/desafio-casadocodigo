@@ -1,6 +1,5 @@
-package com.vandson.desafiocasacodigo.Autor;
+package com.vandson.desafiocasacodigo.autor;
 
-import com.vandson.desafiocasacodigo.Autor.Autor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

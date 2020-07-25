@@ -1,7 +1,5 @@
-package com.vandson.desafiocasacodigo.Autor;
+package com.vandson.desafiocasacodigo.autor;
 
-import com.vandson.desafiocasacodigo.Autor.AutorRequest;
-import com.vandson.desafiocasacodigo.Autor.AutorRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

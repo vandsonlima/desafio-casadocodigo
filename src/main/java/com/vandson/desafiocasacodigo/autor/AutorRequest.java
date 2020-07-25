@@ -1,4 +1,4 @@
-package com.vandson.desafiocasacodigo.Autor;
+package com.vandson.desafiocasacodigo.autor;
 
 import lombok.Getter;
 import lombok.Setter;

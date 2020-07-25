@@ -1,4 +1,4 @@
-package com.vandson.desafiocasacodigo.Autor;
+package com.vandson.desafiocasacodigo.autor;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;

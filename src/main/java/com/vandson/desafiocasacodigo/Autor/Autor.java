@@ -1,7 +1,6 @@
-package com.vandson.desafiocasacodigo.domain;
+package com.vandson.desafiocasacodigo.Autor;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;

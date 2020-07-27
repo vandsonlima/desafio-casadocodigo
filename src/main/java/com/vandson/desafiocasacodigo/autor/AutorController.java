@@ -1,8 +1,6 @@
 package com.vandson.desafiocasacodigo.autor;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,22 +14,11 @@ import javax.validation.Valid;
  * @since 23/07/2020
  **/
 @RestController
-//carga intríseca:3
+//carga intríseca:2
 public class AutorController {
 
     @PersistenceContext
     private EntityManager entityManager;
-    private final ProibeEmailDuplicadoValidator proibeEmailDuplicadoValidator;
-
-    public AutorController(ProibeEmailDuplicadoValidator proibeEmailDuplicadoValidator) {
-        this.proibeEmailDuplicadoValidator = proibeEmailDuplicadoValidator;
-    }
-
-    @InitBinder
-    public void initBinder(WebDataBinder webDataBinder){
-        webDataBinder.addValidators(proibeEmailDuplicadoValidator);
-
-    }
 
     @PostMapping("/autores")
     @Transactional

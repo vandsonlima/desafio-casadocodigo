@@ -1,5 +1,6 @@
 package com.vandson.desafiocasacodigo.autor;
 
+import com.vandson.desafiocasacodigo.compartilhado.UniqueValue;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,7 +19,11 @@ import javax.validation.constraints.Size;
 public class AutorRequest {
 
 
-    private @Email @NotBlank String email;
+
+    @Email
+    @NotBlank
+    @UniqueValue(domainClass = Autor.class, fieldName = "email")
+    private String email;
     private @NotBlank String nome;
     private @NotBlank @Size(max = 400) String descricao;
 

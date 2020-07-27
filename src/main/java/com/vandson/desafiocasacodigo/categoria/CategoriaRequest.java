@@ -1,5 +1,6 @@
 package com.vandson.desafiocasacodigo.categoria;
 
+import com.vandson.desafiocasacodigo.compartilhado.UniqueValue;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotBlank;
 public class CategoriaRequest {
 
     @NotBlank
+    @UniqueValue(fieldName = "nome", domainClass = Categoria.class)
     private String nome;
 
     public CategoriaRequest() {

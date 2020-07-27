@@ -1,13 +1,12 @@
 package com.vandson.desafiocasacodigo.categoria;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 
 /**
@@ -15,21 +14,11 @@ import javax.validation.Valid;
  * @since 24/07/2020
  **/
 @RestController
-//3
+//2
 public class CategoriaController {
 
-    private final EntityManager entityManager;
-    private final ProibeNomeCategoriaDuplicado proibeNomeCategoriaDuplicado;
-
-    public CategoriaController(EntityManager entityManager, ProibeNomeCategoriaDuplicado proibeNomeCategoriaDuplicado) {
-        this.entityManager = entityManager;
-        this.proibeNomeCategoriaDuplicado = proibeNomeCategoriaDuplicado;
-    }
-
-    @InitBinder
-    public void initBinding(WebDataBinder webDataBinder){
-        webDataBinder.addValidators(proibeNomeCategoriaDuplicado);
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @PostMapping("/categorias")
     @Transactional

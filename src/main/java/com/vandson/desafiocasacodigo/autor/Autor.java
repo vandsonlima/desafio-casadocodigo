@@ -23,7 +23,7 @@ public class Autor {
 
     private LocalDateTime instant = LocalDateTime.now();
 
-    private @Email @NotBlank String email;
+    private @Email @NotBlank @Column(unique = true) String email;
     private @NotBlank String nome;
     private @NotBlank @Size(max = 400) String descricao;
 

@@ -1,9 +1,6 @@
 package com.vandson.desafiocasacodigo.autor;
 
 import com.vandson.desafiocasacodigo.compartilhado.UniqueValue;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,12 +10,8 @@ import javax.validation.constraints.Size;
  * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 24/07/2020
  **/
-@Getter
-@Setter
-@ToString
+//1
 public class AutorRequest {
-
-
 
     @Email
     @NotBlank
@@ -37,5 +30,14 @@ public class AutorRequest {
 
     public Autor toAutor(){
         return  new Autor(email, nome, descricao);
+    }
+
+    @Override
+    public String toString() {
+        return "AutorRequest{" +
+                "email='" + email + '\'' +
+                ", nome='" + nome + '\'' +
+                ", descricao='" + descricao + '\'' +
+                '}';
     }
 }

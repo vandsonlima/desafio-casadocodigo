@@ -1,9 +1,6 @@
 package com.vandson.desafiocasacodigo.categoria;
 
 import com.vandson.desafiocasacodigo.compartilhado.UniqueValue;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
@@ -11,9 +8,7 @@ import javax.validation.constraints.NotBlank;
  * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 24/07/2020
  **/
-@Getter
-@Setter
-@ToString
+//0
 public class CategoriaRequest {
 
     @NotBlank
@@ -27,7 +22,14 @@ public class CategoriaRequest {
         this.nome = nome;
     }
 
-    public Categoria toCategoria(){
-        return new Categoria(nome);
+    @Override
+    public String toString() {
+        return "CategoriaRequest{" +
+                "nome='" + nome + '\'' +
+                '}';
+    }
+
+    public String getNome() {
+        return nome;
     }
 }

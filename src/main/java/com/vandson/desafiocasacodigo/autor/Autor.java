@@ -1,6 +1,5 @@
 package com.vandson.desafiocasacodigo.autor;
 
-import lombok.Getter;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -13,8 +12,7 @@ import java.time.LocalDateTime;
  **/
 @Entity
 @Table
-@Getter
-//carga intríseca: 1
+//4
 public class Autor {
 
     @Id

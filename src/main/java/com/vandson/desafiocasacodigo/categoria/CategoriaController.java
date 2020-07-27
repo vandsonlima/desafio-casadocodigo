@@ -14,7 +14,7 @@ import javax.validation.Valid;
  * @since 24/07/2020
  **/
 @RestController
-//2
+//1
 public class CategoriaController {
 
     @PersistenceContext
@@ -23,7 +23,7 @@ public class CategoriaController {
     @PostMapping("/categorias")
     @Transactional
     public String criar(@RequestBody @Valid CategoriaRequest categoriaRequest){
-        Categoria categoria = categoriaRequest.toCategoria();
+        Categoria categoria = new Categoria(categoriaRequest.getNome());
         entityManager.persist(categoria);
         return categoria.toString();
     }

@@ -1,6 +1,5 @@
 package com.vandson.desafiocasacodigo.categoria;
 
-import lombok.Getter;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import javax.validation.constraints.NotBlank;
  **/
 @Entity
 @Table
-@Getter
+//1
 public class Categoria {
 
     @Id

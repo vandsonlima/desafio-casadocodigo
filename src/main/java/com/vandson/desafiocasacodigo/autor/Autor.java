@@ -25,6 +25,10 @@ public class Autor {
     private @NotBlank String nome;
     private @NotBlank @Size(max = 400) String descricao;
 
+    @Deprecated
+    protected Autor() {
+    }
+
     public Autor(@Email @NotBlank String email, @NotBlank String nome, @NotNull @Max(400) String descricao) {
         Assert.hasLength(email, "email não pode ser vazio");
         Assert.hasLength(nome, "nome não pode ser vazio");

@@ -9,20 +9,19 @@ import java.lang.annotation.*;
  * @since 27/07/2020
  **/
 @Documented
-@Constraint( validatedBy = {UniqueValueValidator.class})
+@Constraint( validatedBy = {ExistsIdValidator.class})
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UniqueValue {
+public @interface ExistsId {
 
-    String message() default "{com.vandson.desafiocasadocodigo.validations.uniquevalue}";
+    String message() default "{com.vandson.desafiocasadocodigo.validations.idnotfoud}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    String fieldName();
+    String fieldName() default "id";
 
     Class<?> domainClass();
-
 
 }

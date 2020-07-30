@@ -22,7 +22,7 @@ public class LivroController {
 
     @PostMapping("/livros")
     @Transactional
-    public String criar(@RequestBody @Valid LivroRequest livroRequest) {
+    String criar(@RequestBody @Valid LivroRequest livroRequest) {
         Livro livro = livroRequest.toModel(entityManager);
         entityManager.persist(livro);
         return livro.toString();

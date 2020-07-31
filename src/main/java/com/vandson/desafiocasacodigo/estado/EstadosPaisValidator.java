@@ -1,6 +1,6 @@
-package com.vandson.desafiocasacodigo.compra.comprador;
+package com.vandson.desafiocasacodigo.estado;
 
-import com.vandson.desafiocasacodigo.estado.Estado;
+import com.vandson.desafiocasacodigo.compra.nova.api.NovaCompraRequest;
 import com.vandson.desafiocasacodigo.pais.Pais;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -15,14 +15,14 @@ import javax.persistence.PersistenceContext;
  **/
 //4
 @Component
-public class ValidatorEstadosPais implements Validator {
+public class EstadosPaisValidator implements Validator {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return NovoCompradorRequest.class.isAssignableFrom(aClass);
+        return NovaCompraRequest.class.isAssignableFrom(aClass);
     }
 
     @Override
@@ -30,10 +30,10 @@ public class ValidatorEstadosPais implements Validator {
         if (errors.hasErrors())
             return;
 
-        NovoCompradorRequest novoCompradorRequest = (NovoCompradorRequest) object;
+        NovaCompraRequest novaCompraRequest = (NovaCompraRequest) object;
 
-        Pais pais = entityManager.find(Pais.class, novoCompradorRequest.getIdPais());
-        Estado estado = entityManager.find(Estado.class, novoCompradorRequest.getIdEstado());
+        Pais pais = entityManager.find(Pais.class, novaCompraRequest.getIdPais());
+        Estado estado = entityManager.find(Estado.class, novaCompraRequest.getIdEstado());
 
         if (!estado.pertenceAoPais(pais)) {
             errors.rejectValue("idEstado", null, "O estado não pertence ao país selecionado");

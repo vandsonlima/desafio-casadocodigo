@@ -1,7 +1,5 @@
 package com.vandson.desafiocasacodigo.compra.comprador;
 
-import com.vandson.desafiocasacodigo.compra.PessoaFisica;
-import com.vandson.desafiocasacodigo.compra.PessoaJuridica;
 import org.hibernate.validator.spi.group.DefaultGroupSequenceProvider;
 import org.springframework.util.StringUtils;
 

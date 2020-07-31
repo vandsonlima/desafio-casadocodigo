@@ -1,8 +1,7 @@
 package com.vandson.desafiocasacodigo.compra.comprador;
 
 import com.vandson.desafiocasacodigo.compartilhado.ExistsId;
-import com.vandson.desafiocasacodigo.compra.PessoaFisica;
-import com.vandson.desafiocasacodigo.compra.PessoaJuridica;
+import com.vandson.desafiocasacodigo.estado.Estado;
 import com.vandson.desafiocasacodigo.pais.Pais;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
@@ -17,7 +16,7 @@ import javax.validation.constraints.Pattern;
  * @since 30/07/2020
  **/
 @GroupSequenceProvider(NovoCompradorSequenceProvider.class)
-public class NovoCompradorRequest {
+class NovoCompradorRequest {
     @Email
     @NotBlank
     private String email;
@@ -42,6 +41,7 @@ public class NovoCompradorRequest {
     @NotBlank
     private String cidade;
 
+    @ExistsId(domainClass = Estado.class)
     private Long idEstado;
 
     @ExistsId(domainClass = Pais.class)
@@ -54,7 +54,7 @@ public class NovoCompradorRequest {
     @Pattern(regexp = "^\\d{5}-\\d{3}$", message = "{cep.invalido}")
     private String cep;
 
-    public NovoCompradorRequest(@Email @NotBlank String email, @NotBlank String nome, @NotBlank String sobrenome, @NotBlank String cpfCnpj, @NotBlank String endereco, @NotBlank String complemento, @NotBlank String cidade, Long idEstado, @NotBlank Long idPais, @NotBlank String telefone, @NotBlank String cep) {
+    NovoCompradorRequest(@Email @NotBlank String email, @NotBlank String nome, @NotBlank String sobrenome, @NotBlank String cpfCnpj, @NotBlank String endereco, @NotBlank String complemento, @NotBlank String cidade, Long idEstado, @NotBlank Long idPais, @NotBlank String telefone, @NotBlank String cep) {
         this.email = email;
         this.nome = nome;
         this.sobrenome = sobrenome;

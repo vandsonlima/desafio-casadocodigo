@@ -16,7 +16,7 @@ import javax.validation.Valid;
  **/
 //1
 @RestController
-public class NovoCompradorcontroller {
+class NovoCompradorcontroller {
 
     private EntityManager entityManager;
     private final ValidatorEstadosPais validatorEstadosPais;

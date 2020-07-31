@@ -1,4 +1,4 @@
-package com.vandson.desafiocasacodigo.compra;
+package com.vandson.desafiocasacodigo.compra.comprador;
 
 /**
  * @author Vandson Lima (vandson.vslima@gmail.com)

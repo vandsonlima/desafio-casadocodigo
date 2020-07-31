@@ -1,13 +1,10 @@
 package com.vandson.desafiocasacodigo.compartilhado;
 
-import org.springframework.util.Assert;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.lang.annotation.Annotation;
 import java.util.List;
 
 /**
@@ -15,7 +12,7 @@ import java.util.List;
  * @since 27/07/2020
  **/
 //1
-public class ExistsIdValidator implements ConstraintValidator<ExistsId,Object> {
+public class ExistsIdValidator implements ConstraintValidator<ExistsId,Long> {
     private Class<?> domainClass;
     private String fildName;
 
@@ -31,14 +28,16 @@ public class ExistsIdValidator implements ConstraintValidator<ExistsId,Object> {
     /**
      * Uma entidade é válida quando existe registro no banco com o campo informado
      *
-     * @param object
+     * @param value
      * @param constraintValidatorContext
      * @return
      */
     @Override
-    public boolean isValid(Object object, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(Long value, ConstraintValidatorContext constraintValidatorContext) {
+        if(value == null)
+            return true;
         Query query = entityManager.createQuery("SELECT 1 from "+ domainClass.getName() + " WHERE "+ fildName + "=:attributeValue");
-        query.setParameter("attributeValue", object);
+        query.setParameter("attributeValue", value);
         List<?> result = query.getResultList();
         return !result.isEmpty();
     }

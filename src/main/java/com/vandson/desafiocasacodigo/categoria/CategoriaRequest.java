@@ -9,17 +9,15 @@ import javax.validation.constraints.NotBlank;
  * @since 24/07/2020
  **/
 //0
-public class CategoriaRequest {
+class CategoriaRequest {
 
     @NotBlank
     @UniqueValue(fieldName = "nome", domainClass = Categoria.class)
     private String nome;
 
-    public CategoriaRequest() {
-    }
+    @Deprecated
+    CategoriaRequest() {
 
-    public CategoriaRequest(@NotBlank String nome) {
-        this.nome = nome;
     }
 
     @Override

@@ -13,16 +13,16 @@ import javax.validation.Valid;
  * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 24/07/2020
  **/
-@RestController
 //2
-public class CategoriaController {
+@RestController
+class CategoriaController {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @PostMapping("/categorias")
     @Transactional
-    String criar(@RequestBody @Valid CategoriaRequest categoriaRequest){
+    public String criar(@RequestBody @Valid CategoriaRequest categoriaRequest){
         Categoria categoria = new Categoria(categoriaRequest.getNome());
         entityManager.persist(categoria);
         return categoria.toString();

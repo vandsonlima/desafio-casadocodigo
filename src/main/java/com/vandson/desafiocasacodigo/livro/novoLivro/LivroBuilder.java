@@ -1,8 +1,7 @@
-package com.vandson.desafiocasacodigo.livro;
+package com.vandson.desafiocasacodigo.livro.novoLivro;
 
 import com.vandson.desafiocasacodigo.autor.Autor;
 import com.vandson.desafiocasacodigo.categoria.Categoria;
-import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 
@@ -10,7 +9,7 @@ import java.time.LocalDate;
  * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 27/07/2020
  **/
-public class LivroBuilder {
+class LivroBuilder {
     private String titulo;
     private String resumo;
     private String sumario;

@@ -13,16 +13,16 @@ import javax.validation.Valid;
  * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 23/07/2020
  **/
-@RestController
 //carga intríseca:2
-public class AutorController {
+@RestController
+class AutorController {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @PostMapping("/autores")
     @Transactional
-    String criar(@RequestBody @Valid AutorRequest autorRequest){
+    public String criar(@RequestBody @Valid AutorRequest autorRequest){
         Autor  novoAutor = autorRequest.toAutor();
         entityManager.persist(novoAutor);
         return  novoAutor.toString();

@@ -1,19 +1,15 @@
-package com.vandson.desafiocasacodigo.livro;
+package com.vandson.desafiocasacodigo.livro.detalhesLivro;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.vandson.desafiocasacodigo.autor.Autor;
-import com.vandson.desafiocasacodigo.categoria.Categoria;
-import com.vandson.desafiocasacodigo.compartilhado.ExistsId;
-import com.vandson.desafiocasacodigo.compartilhado.UniqueValue;
+import com.vandson.desafiocasacodigo.livro.novoLivro.Livro;
+import org.springframework.util.Assert;
 
-import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 /**
  * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 30/07/2020
  **/
-public class DetalheLivroResponse {
+class DetalheLivroResponse {
 
     private String titulo;
     private String resumo;
@@ -34,6 +30,10 @@ public class DetalheLivroResponse {
     }
 
     public DetalheLivroResponse(Livro livro) {
+
+        Assert.notNull(livro.getAutor(), "O autor precisa vir preenchida");
+        Assert.notNull(livro.getCategoria(), "A categoria precisa vir preenchida");
+
         this.titulo = livro.getTitulo();
         this.resumo = livro.getResumo();
         this.sumario = livro.getSumario();

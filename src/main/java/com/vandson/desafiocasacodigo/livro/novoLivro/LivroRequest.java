@@ -1,4 +1,4 @@
-package com.vandson.desafiocasacodigo.livro;
+package com.vandson.desafiocasacodigo.livro.novoLivro;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.vandson.desafiocasacodigo.autor.Autor;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
  * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 27/07/2020
  **/
-public class LivroRequest {
+class LivroRequest {
 
     @NotBlank
     @UniqueValue(domainClass = Livro.class, fieldName = "titulo")

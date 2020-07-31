@@ -1,4 +1,4 @@
-package com.vandson.desafiocasacodigo.livro;
+package com.vandson.desafiocasacodigo.livro.novoLivro;
 
 import com.vandson.desafiocasacodigo.autor.Autor;
 import com.vandson.desafiocasacodigo.categoria.Categoria;

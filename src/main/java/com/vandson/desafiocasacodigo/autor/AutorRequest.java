@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
  * @since 24/07/2020
  **/
 //1
-public class AutorRequest {
+class AutorRequest {
 
     @Email
     @NotBlank
@@ -20,7 +20,7 @@ public class AutorRequest {
     private @NotBlank String nome;
     private @NotBlank @Size(max = 400) String descricao;
 
-    public AutorRequest(@Email @NotBlank String email,
+    AutorRequest(@Email @NotBlank String email,
                         @NotBlank String nome,
                         @NotBlank @Size(max = 400) String descricao) {
         this.email = email;
@@ -28,7 +28,7 @@ public class AutorRequest {
         this.descricao = descricao;
     }
 
-    public Autor toAutor(){
+    Autor toAutor(){
         return  new Autor(email, nome, descricao);
     }
 

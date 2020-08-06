@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 30/07/2020
  **/
-//10
+//8
 @GroupSequenceProvider(NovaCompradaSequenceProvider.class)
 public class NovaCompraRequest {
     @Email
@@ -174,5 +174,9 @@ public class NovaCompraRequest {
 
     public List<ItemCompraRequest> getItensNovaCompra() {
         return itensNovaCompra;
+    }
+
+    public boolean temEstado() {
+        return idEstado != null;
     }
 }

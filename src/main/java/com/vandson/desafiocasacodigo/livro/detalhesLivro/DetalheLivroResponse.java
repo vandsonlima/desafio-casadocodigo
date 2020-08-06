@@ -3,6 +3,9 @@ package com.vandson.desafiocasacodigo.livro.detalhesLivro;
 import com.vandson.desafiocasacodigo.livro.novoLivro.Livro;
 import org.springframework.util.Assert;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -14,7 +17,7 @@ class DetalheLivroResponse {
     private String titulo;
     private String resumo;
     private String sumario;
-    private double preco;
+    private @NotNull @DecimalMin(value = "20") BigDecimal preco;
     private int numeroPaginas;
     private String isbn;
     private LocalDate dataPublicacao;
@@ -60,7 +63,7 @@ class DetalheLivroResponse {
         return sumario;
     }
 
-    public double getPreco() {
+    public BigDecimal getPreco() {
         return preco;
     }
 

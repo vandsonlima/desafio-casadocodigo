@@ -15,7 +15,7 @@ import java.util.List;
  * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 31/07/2020
  **/
-//5
+//4
 @Component
 public class ValorCompraValidator implements Validator {
 
@@ -33,24 +33,18 @@ public class ValorCompraValidator implements Validator {
             return;
 
         NovaCompraRequest novaCompraRequest = (NovaCompraRequest) object;
-        List<Livro> livrosSelecionados = entityManager.createQuery("SELECT livro FROM Livro livro WHERE livro.id IN (:idsLivros)")
-                .setParameter("idsLivros", novaCompraRequest.getListaIdLivros()).getResultList();
-
-        if(!valorTotalCorreto(livrosSelecionados, novaCompraRequest)) {
+        if(!valorTotalCorreto(novaCompraRequest)) {
             errors.rejectValue("itensNovaCompra",
                     null,
                     String.format("O valor total de %s não corresponde ao valor total da compra", novaCompraRequest.getTotal()));
         }
-
     }
 
-    private boolean valorTotalCorreto(List<Livro> livrosSelecionados, NovaCompraRequest novaCompraRequest) {
-        Assert.notEmpty(livrosSelecionados, "Nenhum livro selecionado para a verificação do valor");
-
-        Double valorCalculado = novaCompraRequest.getItensNovaCompra()
-                .stream()
-                .mapToDouble(itemCompraRequest -> itemCompraRequest.recuperaValorItem(livrosSelecionados))
+    private boolean valorTotalCorreto(NovaCompraRequest novaCompraRequest) {
+        Double valorSomadoDosItens = novaCompraRequest.getItensNovaCompra().stream()
+                .map(item -> item.toModel(entityManager))
+                .mapToDouble(itemCompra -> itemCompra.getValor().doubleValue())
                 .sum();
-        return valorCalculado.equals(novaCompraRequest.getTotal());
+        return valorSomadoDosItens.equals(novaCompraRequest.getTotal());
     }
 }

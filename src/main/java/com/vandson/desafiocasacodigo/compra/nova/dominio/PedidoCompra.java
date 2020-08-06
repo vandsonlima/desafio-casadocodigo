@@ -16,7 +16,7 @@ import java.util.List;
  **/
 @Entity
 @Table
-//4
+//2
 public class PedidoCompra {
 
     @Id
@@ -66,7 +66,7 @@ public class PedidoCompra {
     private Double total;
 
     @NotEmpty
-    @OneToMany(mappedBy = "pedidoCompra", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ItemCompra> itensCompra;
 
     private StatusCompra statusCompra;
@@ -115,7 +115,6 @@ public class PedidoCompra {
         this.total = total;
         this.itensCompra = itensCompra;
         this.statusCompra = statusCompra;
-        this.itensCompra.forEach(itemCompra -> itemCompra.setPedidoCompra(this));
     }
 
     public Long getId() {

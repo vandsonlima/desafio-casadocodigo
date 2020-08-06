@@ -6,6 +6,7 @@ import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -30,9 +31,7 @@ public class Livro {
 
     private String sumario;
 
-    @NotNull
-    @DecimalMin(value = "20")
-    private double preco;
+    private @NotNull @DecimalMin(value = "20") BigDecimal preco;
 
     @NotNull
     @Min(value = 100)
@@ -71,19 +70,19 @@ public class Livro {
      * @param autor
      */
     Livro(@NotBlank String titulo,
-                 @NotBlank @Size String resumo,
-                 String sumario,
-                 double preco,
-                 int numeroPaginas,
-                 @NotBlank String isbn,
-                 @NotNull @Future LocalDate dataPublicacao,
-                 @NotNull Categoria categoria,
-                 @NotNull Autor autor) {
+          @NotBlank @Size String resumo,
+          String sumario,
+          @NotNull @DecimalMin(value = "20") BigDecimal preco,
+          int numeroPaginas,
+          @NotBlank String isbn,
+          @NotNull @Future LocalDate dataPublicacao,
+          @NotNull Categoria categoria,
+          @NotNull Autor autor) {
 
         Assert.hasLength(titulo, "O título é obrigatório");
         Assert.hasLength(titulo, "O resumo é obrigatório");
         Assert.isTrue(resumo.length() <= 500, "O resumo deve ter no máximo 500 caracteres");
-        Assert.isTrue(preco >= 20, "O preco deve ser maior ou igual a 20.00");
+        Assert.isTrue(preco.doubleValue() >= 20, "O preco deve ser maior ou igual a 20.00");
         Assert.isTrue(numeroPaginas >= 100, "O número de páginas deve ser maior ou igual a 100");
         Assert.hasLength(isbn, "isbn é obritatório");
         Assert.notNull(dataPublicacao, "data publicação é obritatório");
@@ -137,7 +136,7 @@ public class Livro {
         return sumario;
     }
 
-    public double getPreco() {
+    public BigDecimal getPreco() {
         return preco;
     }
 

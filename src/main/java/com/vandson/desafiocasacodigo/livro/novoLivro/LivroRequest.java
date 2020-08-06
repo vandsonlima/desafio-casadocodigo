@@ -8,6 +8,7 @@ import com.vandson.desafiocasacodigo.compartilhado.UniqueValue;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -26,9 +27,7 @@ class LivroRequest {
 
     private String sumario;
 
-    @NotNull
-    @DecimalMin(value = "20")
-    private double preco;
+    private @NotNull @DecimalMin(value = "20") BigDecimal preco;
 
     @NotNull
     @Min(value = 100)
@@ -51,7 +50,7 @@ class LivroRequest {
     private Long idAutor;
 
     public LivroRequest(@NotBlank String titulo, @NotBlank @Size(max = 500) String resumo, String sumario,
-                        @NotNull @DecimalMin(value = "20") double preco, @NotNull @Min(value = 100) int numeroPaginas,
+                        @NotNull @DecimalMin(value = "20") BigDecimal preco, @NotNull @Min(value = 100) int numeroPaginas,
                         @NotBlank String isbn, @Future LocalDate dataPublicacao, @NotNull Long idCategoria, @NotNull Long idAutor) {
         this.titulo = titulo;
         this.resumo = resumo;

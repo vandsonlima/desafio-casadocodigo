@@ -3,6 +3,9 @@ package com.vandson.desafiocasacodigo.livro.novoLivro;
 import com.vandson.desafiocasacodigo.autor.Autor;
 import com.vandson.desafiocasacodigo.categoria.Categoria;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -13,7 +16,7 @@ class LivroBuilder {
     private String titulo;
     private String resumo;
     private String sumario;
-    private double preco;
+    private @NotNull @DecimalMin(value = "20") BigDecimal preco;
     private int numeroPaginas;
     private String isbn;
     private LocalDate dataPublicacao;
@@ -46,7 +49,7 @@ class LivroBuilder {
         return this;
     }
 
-    public LivroBuilder withPreco(double preco) {
+    public LivroBuilder withPreco(@NotNull @DecimalMin(value = "20") BigDecimal preco) {
         this.preco = preco;
         return this;
     }

@@ -2,19 +2,21 @@ package com.vandson.desafiocasacodigo.compra.nova.api;
 
 import com.vandson.desafiocasacodigo.compartilhado.ExistsId;
 import com.vandson.desafiocasacodigo.compra.nova.dominio.ItemCompra;
+import com.vandson.desafiocasacodigo.compra.nova.dominio.PedidoCompra;
 import com.vandson.desafiocasacodigo.livro.novoLivro.Livro;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 31/07/2020
  **/
-//6
+//2
 public class ItemCompraRequest {
 
     @ExistsId(domainClass = Livro.class)
@@ -38,14 +40,6 @@ public class ItemCompraRequest {
         Assert.isTrue(quantidade > 0, "A quantidade deve ser maior que zero");
 
         Livro livro = entityManager.find(Livro.class, idLivro);
-        return new ItemCompra(quantidade, livro);
-    }
-
-    public double recuperaValorItem(List<Livro> livrosSelecionados) {
-        return livrosSelecionados
-                .stream()
-                .filter(livro -> livro.getId().equals(getIdLivro()))
-                .mapToDouble(livro -> livro.getPreco() * quantidade)
-                .sum();
+        return new ItemCompra(quantidade, livro, livro.getPreco());
     }
 }

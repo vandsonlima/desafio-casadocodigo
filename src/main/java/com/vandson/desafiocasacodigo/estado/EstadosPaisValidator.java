@@ -31,12 +31,13 @@ public class EstadosPaisValidator implements Validator {
             return;
 
         NovaCompraRequest novaCompraRequest = (NovaCompraRequest) object;
+        if(novaCompraRequest.temEstado()) {
+            Pais pais = entityManager.find(Pais.class, novaCompraRequest.getIdPais());
+            Estado estado = entityManager.find(Estado.class, novaCompraRequest.getIdEstado());
 
-        Pais pais = entityManager.find(Pais.class, novaCompraRequest.getIdPais());
-        Estado estado = entityManager.find(Estado.class, novaCompraRequest.getIdEstado());
-
-        if (!estado.pertenceAoPais(pais)) {
-            errors.rejectValue("idEstado", null, "O estado não pertence ao país selecionado");
+            if (!estado.pertenceAoPais(pais)) {
+                errors.rejectValue("idEstado", null, "O estado não pertence ao país selecionado");
+            }
         }
     }
 }

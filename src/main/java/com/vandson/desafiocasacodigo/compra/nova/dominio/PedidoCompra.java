@@ -1,7 +1,6 @@
 package com.vandson.desafiocasacodigo.compra.nova.dominio;
 
-import com.vandson.desafiocasacodigo.compra.nova.dominio.ItemCompra;
-import com.vandson.desafiocasacodigo.compra.nova.dominio.StatusCompra;
+import com.vandson.desafiocasacodigo.cupomDesconto.CupomDesconto;
 import com.vandson.desafiocasacodigo.estado.Estado;
 import com.vandson.desafiocasacodigo.pais.Pais;
 import org.springframework.util.Assert;
@@ -71,6 +70,10 @@ public class PedidoCompra {
 
     private StatusCompra statusCompra;
 
+    @ManyToOne
+    @JoinColumn(name = "id_cupom_desconto", foreignKey = @ForeignKey(name = "fk_id_cupom_desconto_pedido_compra"))
+    private CupomDesconto cupomDesconto;
+
     @Deprecated
     protected PedidoCompra() {
     }
@@ -82,7 +85,6 @@ public class PedidoCompra {
                            @NotBlank String endereco,
                            @NotBlank String complemento,
                            @NotBlank String cidade,
-                           Estado estado,
                            @NotNull Pais pais,
                            @NotBlank String telefone,
                            @NotBlank @Pattern(regexp = "^\\d{5}-\\d{3}$", message = "{cep.invalido}") String cep,
@@ -108,7 +110,6 @@ public class PedidoCompra {
         this.endereco = endereco;
         this.complemento = complemento;
         this.cidade = cidade;
-        this.estado = estado;
         this.pais = pais;
         this.telefone = telefone;
         this.cep = cep;
@@ -139,5 +140,18 @@ public class PedidoCompra {
 
     public StatusCompra getStatusCompra() {
         return statusCompra;
+    }
+
+    public void aplicarCupom(@NotNull CupomDesconto cupomDesconto){
+        Assert.state(id == null, "Cupom só pode ser aplicado em novas compras");
+        Assert.notNull(cupomDesconto, "O cupom não pode ser nulo");
+        this.cupomDesconto = cupomDesconto;
+        this.total = total - (total * cupomDesconto.getPercentual() * 0.01); //deveria ter usado BigDecimal
+    }
+
+    public void setEstado(@NotNull Estado estado) {
+        Assert.notNull(estado, "O estado não pode ser nulo");
+        Assert.isTrue(estado.pertenceAoPais(this.pais),"O estado não pertence ao país do pedido");
+        this.estado = estado;
     }
 }

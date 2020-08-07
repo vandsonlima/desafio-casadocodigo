@@ -23,16 +23,18 @@ class NovaCompraController {
     private EntityManager entityManager;
     private final EstadosPaisValidator estadosPaisValidator;
     private final ValorCompraValidator valorCompraValidator;
+    private final CupomDescontoValidator cupomDescontoValidator;
 
-    public NovaCompraController(EntityManager entityManager, EstadosPaisValidator estadosPaisValidator, ValorCompraValidator valorCompraValidator) {
+    public NovaCompraController(EntityManager entityManager, EstadosPaisValidator estadosPaisValidator, ValorCompraValidator valorCompraValidator, CupomDescontoValidator cupomDescontoValidator) {
         this.entityManager = entityManager;
         this.estadosPaisValidator = estadosPaisValidator;
         this.valorCompraValidator = valorCompraValidator;
+        this.cupomDescontoValidator = cupomDescontoValidator;
     }
 
     @InitBinder
     public void initBinding(WebDataBinder webDataBinder){
-        webDataBinder.addValidators(estadosPaisValidator, valorCompraValidator);
+        webDataBinder.addValidators(estadosPaisValidator, valorCompraValidator, cupomDescontoValidator);
     }
 
     @PostMapping("/compra")

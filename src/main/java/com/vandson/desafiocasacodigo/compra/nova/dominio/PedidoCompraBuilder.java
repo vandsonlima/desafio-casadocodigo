@@ -1,9 +1,11 @@
 package com.vandson.desafiocasacodigo.compra.nova.dominio;
 
+import com.vandson.desafiocasacodigo.cupomDesconto.CupomDesconto;
 import com.vandson.desafiocasacodigo.estado.Estado;
 import com.vandson.desafiocasacodigo.pais.Pais;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Vandson Lima (vandson.vslima@gmail.com)
@@ -25,6 +27,7 @@ public final class PedidoCompraBuilder {
     private Double total;
     private List<ItemCompra> itensCompra;
     private StatusCompra statusCompra;
+    private CupomDesconto cupom;
 
     private PedidoCompraBuilder() {
     }
@@ -103,7 +106,19 @@ public final class PedidoCompraBuilder {
         return this;
     }
 
-    public PedidoCompra build() {
-        return new PedidoCompra(email, nome, sobrenome, cpfCnpj, endereco, complemento, cidade, estado, pais, telefone, cep, total, itensCompra, statusCompra);
+    public PedidoCompraBuilder comCupom(CupomDesconto cupomDesconto) {
+        this.cupom = cupomDesconto;
+        return this;
     }
+
+    public PedidoCompra build() {
+        PedidoCompra pedidoCompra = new PedidoCompra(email, nome, sobrenome, cpfCnpj, endereco, complemento, cidade, pais, telefone, cep, total, itensCompra, statusCompra);
+        if(Objects.nonNull(cupom))
+            pedidoCompra.aplicarCupom(cupom);
+        if(Objects.nonNull(estado))
+            pedidoCompra.setEstado(estado);
+
+        return pedidoCompra;
+    }
+
 }

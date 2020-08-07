@@ -5,19 +5,22 @@ import com.vandson.desafiocasacodigo.compra.nova.dominio.ItemCompra;
 import com.vandson.desafiocasacodigo.compra.nova.dominio.PedidoCompra;
 import com.vandson.desafiocasacodigo.compra.nova.dominio.PedidoCompraBuilder;
 import com.vandson.desafiocasacodigo.compra.nova.dominio.StatusCompra;
+import com.vandson.desafiocasacodigo.cupomDesconto.CupomDesconto;
 import com.vandson.desafiocasacodigo.estado.Estado;
-import com.vandson.desafiocasacodigo.livro.novoLivro.Livro;
 import com.vandson.desafiocasacodigo.pais.Pais;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 import org.hibernate.validator.group.GroupSequenceProvider;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -72,6 +75,8 @@ public class NovaCompraRequest {
     @Valid
     private List<ItemCompraRequest> itensNovaCompra;
 
+    private String cupom;
+
     NovaCompraRequest(@Email @NotBlank String email,
                       @NotBlank String nome,
                       @NotBlank String sobrenome,
@@ -84,7 +89,7 @@ public class NovaCompraRequest {
                       @NotBlank String telefone,
                       @NotBlank String cep,
                       @NotNull @Positive Double total,
-                      @NotEmpty @Valid List<ItemCompraRequest> itensNovaCompra) {
+                      @NotEmpty @Valid List<ItemCompraRequest> itensNovaCompra, String cupom) {
         this.email = email;
         this.nome = nome;
         this.sobrenome = sobrenome;
@@ -98,6 +103,7 @@ public class NovaCompraRequest {
         this.cep = cep;
         this.total = total;
         this.itensNovaCompra = itensNovaCompra;
+        this.cupom = cupom;
     }
 
     @Override
@@ -134,36 +140,35 @@ public class NovaCompraRequest {
         return total;
     }
 
-    public List<Long> getListaIdLivros() {
-        return itensNovaCompra
-                .stream()
-                .mapToLong(ItemCompraRequest::getIdLivro)
-                .boxed()
-                .collect(Collectors.toList());
-    }
-
     public PedidoCompra toModel(EntityManager entityManager){
+        PedidoCompraBuilder builder = PedidoCompraBuilder.umPedidoCompra();
 
         List<ItemCompra> itemCompras = itensNovaCompra.stream()
                 .map( itemCompraRequest -> itemCompraRequest.toModel(entityManager))
                 .collect(Collectors.toList());
 
-        Pais pais = entityManager.find(Pais.class, idPais);
-        Estado estado = null;
-        if(Objects.nonNull(idEstado)){
-            estado = entityManager.find(Estado.class, idEstado);
+        builder = builder.comItensCompra(itemCompras);
+        builder = builder.comPais(entityManager.find(Pais.class, idPais));
+
+        if(temEstado()){
+            builder.comEstado(entityManager.find(Estado.class, idEstado));
         }
 
-        return PedidoCompraBuilder.umPedidoCompra()
+        if(temCupom()){
+           List<CupomDesconto> cupomDesconto = Optional.ofNullable(entityManager.createQuery("SELECT cupom FROM CupomDesconto cupom WHERE cupom.codigo =:codigo")
+                    .setParameter("codigo", cupom)
+                    .getResultList()).orElseGet(ArrayList::new);
+            Assert.notEmpty(cupomDesconto, "O cupom deve ser válido");
+            builder = builder.comCupom(cupomDesconto.get(0));
+        }
+
+        return builder
                 .comCep(this.cep)
                 .comCidade(this.cidade)
                 .comComplemento(this.complemento)
                 .comCpfCnpj(this.cpfCnpj)
                 .comEmail(this.email)
                 .comEndereco(this.endereco)
-                .comEstado(estado)
-                .comPais(pais)
-                .comItensCompra(itemCompras)
                 .comNome(this.nome)
                 .comSobrenome(this.sobrenome)
                 .comTelefone(this.telefone)
@@ -178,5 +183,13 @@ public class NovaCompraRequest {
 
     public boolean temEstado() {
         return idEstado != null;
+    }
+
+    public boolean temCupom() {
+        return StringUtils.hasLength(cupom);
+    }
+
+    public String getCupom() {
+        return cupom;
     }
 }

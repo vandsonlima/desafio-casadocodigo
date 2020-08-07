@@ -1,5 +1,6 @@
 package com.vandson.desafiocasacodigo.cupomDesconto;
 
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class CupomDesconto {
     private Long id;
 
     @NotNull
+    @Column(unique = true)
     private String codigo;
 
     @Positive
@@ -43,6 +45,22 @@ public class CupomDesconto {
 
     @Deprecated
     protected CupomDesconto() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public int getPercentual() {
+        return percentual;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public LocalDateTime getValidade() {
+        return validade;
     }
 
     @Override

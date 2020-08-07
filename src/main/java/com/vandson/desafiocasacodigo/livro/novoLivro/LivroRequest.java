@@ -38,7 +38,7 @@ class LivroRequest {
     private String isbn;
 
     @Future
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataPublicacao;
 
     @NotNull

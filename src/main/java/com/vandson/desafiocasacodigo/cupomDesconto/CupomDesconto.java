@@ -72,4 +72,8 @@ public class CupomDesconto {
                 ", validade=" + validade +
                 '}';
     }
+
+    public boolean valido() {
+        return validade.isAfter(LocalDateTime.now());
+    }
 }

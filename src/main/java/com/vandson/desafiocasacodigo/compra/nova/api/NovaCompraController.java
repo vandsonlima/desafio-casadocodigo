@@ -1,6 +1,7 @@
 package com.vandson.desafiocasacodigo.compra.nova.api;
 
 import com.vandson.desafiocasacodigo.compra.nova.dominio.PedidoCompra;
+import com.vandson.desafiocasacodigo.cupomDesconto.CupomDescontoRepository;
 import com.vandson.desafiocasacodigo.estado.EstadosPaisValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +22,17 @@ import java.net.URI;
 class NovaCompraController {
 
     private EntityManager entityManager;
+    private final CupomDescontoRepository cupomDescontoRepository;
+    private final CupomDescontoValidator cupomDescontoValidator;
     private final EstadosPaisValidator estadosPaisValidator;
     private final ValorCompraValidator valorCompraValidator;
-    private final CupomDescontoValidator cupomDescontoValidator;
 
-    public NovaCompraController(EntityManager entityManager, EstadosPaisValidator estadosPaisValidator, ValorCompraValidator valorCompraValidator, CupomDescontoValidator cupomDescontoValidator) {
+    public NovaCompraController(EntityManager entityManager, CupomDescontoRepository cupomDescontoRepository, CupomDescontoValidator cupomDescontoValidator, EstadosPaisValidator estadosPaisValidator, ValorCompraValidator valorCompraValidator) {
         this.entityManager = entityManager;
+        this.cupomDescontoRepository = cupomDescontoRepository;
+        this.cupomDescontoValidator = cupomDescontoValidator;
         this.estadosPaisValidator = estadosPaisValidator;
         this.valorCompraValidator = valorCompraValidator;
-        this.cupomDescontoValidator = cupomDescontoValidator;
     }
 
     @InitBinder
@@ -41,7 +44,7 @@ class NovaCompraController {
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional
     public ResponseEntity<?> criar(@RequestBody @Valid NovaCompraRequest novaCompraRequest) {
-        PedidoCompra novoPedido = novaCompraRequest.toModel(entityManager);
+        PedidoCompra novoPedido = novaCompraRequest.toModel(entityManager, cupomDescontoRepository);
         entityManager.persist(novoPedido);
         return ResponseEntity.created(URI.create("/compra/" + novoPedido.getId())).build();
     }

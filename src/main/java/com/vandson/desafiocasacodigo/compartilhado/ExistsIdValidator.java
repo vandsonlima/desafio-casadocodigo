@@ -12,7 +12,7 @@ import java.util.List;
  * @since 27/07/2020
  **/
 //1
-public class ExistsIdValidator implements ConstraintValidator<ExistsId,Long> {
+public class ExistsIdValidator implements ConstraintValidator<ExistsId,Object> {
     private Class<?> domainClass;
     private String fildName;
 
@@ -33,7 +33,7 @@ public class ExistsIdValidator implements ConstraintValidator<ExistsId,Long> {
      * @return
      */
     @Override
-    public boolean isValid(Long value, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(Object value, ConstraintValidatorContext constraintValidatorContext) {
         if(value == null)
             return true;
         Query query = entityManager.createQuery("SELECT 1 from "+ domainClass.getName() + " WHERE "+ fildName + "=:attributeValue");

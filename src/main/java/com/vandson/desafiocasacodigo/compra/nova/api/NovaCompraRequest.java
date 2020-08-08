@@ -6,6 +6,7 @@ import com.vandson.desafiocasacodigo.compra.nova.dominio.PedidoCompra;
 import com.vandson.desafiocasacodigo.compra.nova.dominio.PedidoCompraBuilder;
 import com.vandson.desafiocasacodigo.compra.nova.dominio.StatusCompra;
 import com.vandson.desafiocasacodigo.cupomDesconto.CupomDesconto;
+import com.vandson.desafiocasacodigo.cupomDesconto.CupomDescontoRepository;
 import com.vandson.desafiocasacodigo.estado.Estado;
 import com.vandson.desafiocasacodigo.pais.Pais;
 import org.hibernate.validator.constraints.br.CNPJ;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
  * @author Vandson Lima (vandson.vslima@gmail.com)
  * @since 30/07/2020
  **/
-//8
+//10
 @GroupSequenceProvider(NovaCompradaSequenceProvider.class)
 public class NovaCompraRequest {
     @Email
@@ -75,6 +76,7 @@ public class NovaCompraRequest {
     @Valid
     private List<ItemCompraRequest> itensNovaCompra;
 
+    @ExistsId(domainClass = CupomDesconto.class, fieldName = "codigo")
     private String cupom;
 
     NovaCompraRequest(@Email @NotBlank String email,
@@ -106,25 +108,7 @@ public class NovaCompraRequest {
         this.cupom = cupom;
     }
 
-    @Override
-    public String toString() {
-        return "NovoClienteRequest{" +
-                "email='" + email + '\'' +
-                ", nome='" + nome + '\'' +
-                ", sobrenome='" + sobrenome + '\'' +
-                ", cpfCnpj='" + cpfCnpj + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ", complemento='" + complemento + '\'' +
-                ", cidade='" + cidade + '\'' +
-                ", idEstado=" + idEstado +
-                ", idPais=" + idPais +
-                ", telefone='" + telefone + '\'' +
-                ", cep='" + cep + '\'' +
-                ", total='" + total + '\'' +
-                '}';
-    }
-
-    public String getCpfCnpj() {
+     public String getCpfCnpj() {
         return cpfCnpj;
     }
 
@@ -140,29 +124,23 @@ public class NovaCompraRequest {
         return total;
     }
 
-    public PedidoCompra toModel(EntityManager entityManager){
+    public PedidoCompra toModel(EntityManager entityManager, CupomDescontoRepository cupomDescontoRepository){
         PedidoCompraBuilder builder = PedidoCompraBuilder.umPedidoCompra();
 
-        List<ItemCompra> itemCompras = itensNovaCompra.stream()
+        List<ItemCompra> itemCompras = itensNovaCompra
+                .stream()
                 .map( itemCompraRequest -> itemCompraRequest.toModel(entityManager))
                 .collect(Collectors.toList());
-
         builder = builder.comItensCompra(itemCompras);
-        builder = builder.comPais(entityManager.find(Pais.class, idPais));
 
-        if(temEstado()){
+        if(temEstado())
             builder.comEstado(entityManager.find(Estado.class, idEstado));
-        }
 
-        if(temCupom()){
-           List<CupomDesconto> cupomDesconto = Optional.ofNullable(entityManager.createQuery("SELECT cupom FROM CupomDesconto cupom WHERE cupom.codigo =:codigo")
-                    .setParameter("codigo", cupom)
-                    .getResultList()).orElseGet(ArrayList::new);
-            Assert.notEmpty(cupomDesconto, "O cupom deve ser válido");
-            builder = builder.comCupom(cupomDesconto.get(0));
-        }
+        if(StringUtils.hasText(cupom))
+            builder.comCupom(cupomDescontoRepository.getByCodigo(cupom));
 
         return builder
+                .comPais(entityManager.find(Pais.class, idPais))
                 .comCep(this.cep)
                 .comCidade(this.cidade)
                 .comComplemento(this.complemento)
@@ -185,11 +163,27 @@ public class NovaCompraRequest {
         return idEstado != null;
     }
 
-    public boolean temCupom() {
-        return StringUtils.hasLength(cupom);
+    public Optional<String> getCupomDesconto() {
+        return Optional.ofNullable(cupom);
     }
 
-    public String getCupom() {
-        return cupom;
+    @Override
+    public String toString() {
+        return "NovaCompraRequest{" +
+                "email='" + email + '\'' +
+                ", nome='" + nome + '\'' +
+                ", sobrenome='" + sobrenome + '\'' +
+                ", cpfCnpj='" + cpfCnpj + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", idEstado=" + idEstado +
+                ", idPais=" + idPais +
+                ", telefone='" + telefone + '\'' +
+                ", cep='" + cep + '\'' +
+                ", total=" + total +
+                ", itensNovaCompra=" + itensNovaCompra +
+                ", cupom='" + cupom + '\'' +
+                '}';
     }
 }

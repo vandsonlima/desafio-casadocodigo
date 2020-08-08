@@ -1,5 +1,6 @@
 package com.vandson.desafiocasacodigo.compra.nova.dominio;
 
+import com.vandson.desafiocasacodigo.cupomDesconto.CupomAplicado;
 import com.vandson.desafiocasacodigo.cupomDesconto.CupomDesconto;
 import com.vandson.desafiocasacodigo.estado.Estado;
 import com.vandson.desafiocasacodigo.pais.Pais;
@@ -70,9 +71,8 @@ public class PedidoCompra {
 
     private StatusCompra statusCompra;
 
-    @ManyToOne
-    @JoinColumn(name = "id_cupom_desconto", foreignKey = @ForeignKey(name = "fk_id_cupom_desconto_pedido_compra"))
-    private CupomDesconto cupomDesconto;
+    @Embedded
+    private CupomAplicado cupomAplicado;
 
     @Deprecated
     protected PedidoCompra() {
@@ -143,9 +143,12 @@ public class PedidoCompra {
     }
 
     public void aplicarCupom(@NotNull CupomDesconto cupomDesconto){
-        Assert.state(id == null, "Cupom só pode ser aplicado em novas compras");
+        Assert.isNull(id, "Cupom só pode ser aplicado em novas compras");
+        Assert.isNull(this.cupomAplicado, "O cupom não pode ser substituído");
         Assert.notNull(cupomDesconto, "O cupom não pode ser nulo");
-        this.cupomDesconto = cupomDesconto;
+        Assert.isTrue(cupomDesconto.valido(), "O cupom selecionado não é mais válido");
+
+        this.cupomAplicado = new CupomAplicado(cupomDesconto);
         this.total = total - (total * cupomDesconto.getPercentual() * 0.01); //deveria ter usado BigDecimal
     }
 
@@ -153,5 +156,27 @@ public class PedidoCompra {
         Assert.notNull(estado, "O estado não pode ser nulo");
         Assert.isTrue(estado.pertenceAoPais(this.pais),"O estado não pertence ao país do pedido");
         this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return "PedidoCompra{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", nome='" + nome + '\'' +
+                ", sobrenome='" + sobrenome + '\'' +
+                ", cpfCnpj='" + cpfCnpj + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", estado=" + estado +
+                ", pais=" + pais +
+                ", telefone='" + telefone + '\'' +
+                ", cep='" + cep + '\'' +
+                ", total=" + total +
+                ", itensCompra=" + itensCompra +
+                ", statusCompra=" + statusCompra +
+                ", cupomAplicado=" + cupomAplicado +
+                '}';
     }
 }

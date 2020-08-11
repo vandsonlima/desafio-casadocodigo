@@ -1,7 +1,5 @@
 package com.vandson.desafiocasacodigo.cupomDesconto;
 
-import com.vandson.desafiocasacodigo.cupomDesconto.CupomDesconto;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -46,5 +44,9 @@ public class CupomAplicado {
                 ", percentual=" + percentual +
                 ", validade=" + validade +
                 '}';
+    }
+
+    public int getPercentual() {
+        return percentual;
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.util.Assert;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author Vandson Lima (vandson.vslima@gmail.com)
@@ -149,13 +151,18 @@ public class PedidoCompra {
         Assert.isTrue(cupomDesconto.valido(), "O cupom selecionado não é mais válido");
 
         this.cupomAplicado = new CupomAplicado(cupomDesconto);
-        this.total = total - (total * cupomDesconto.getPercentual() * 0.01); //deveria ter usado BigDecimal
     }
 
     public void setEstado(@NotNull Estado estado) {
         Assert.notNull(estado, "O estado não pode ser nulo");
         Assert.isTrue(estado.pertenceAoPais(this.pais),"O estado não pertence ao país do pedido");
         this.estado = estado;
+    }
+
+    public Optional<Double> valorFinal(){
+        if(Objects.nonNull(cupomAplicado))
+            return Optional.of(total - (total * cupomAplicado.getPercentual() * 0.01)); //deveria ter usado BigDecimal
+        return Optional.empty();
     }
 
     @Override
@@ -178,5 +185,17 @@ public class PedidoCompra {
                 ", statusCompra=" + statusCompra +
                 ", cupomAplicado=" + cupomAplicado +
                 '}';
+    }
+
+    public CupomAplicado getCupomAplicado() {
+        return cupomAplicado;
+    }
+
+    public Double valorCupom() {
+       return Optional.ofNullable(cupomAplicado)
+                .map(CupomAplicado::getPercentual)
+                .map(integer -> integer * 0.01 * total)
+                .orElseGet(null);
+
     }
 }
